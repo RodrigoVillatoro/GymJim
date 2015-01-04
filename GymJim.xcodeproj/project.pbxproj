@@ -8,13 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		AF3A69741A598D11000703FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3A69731A598D11000703FA /* AppDelegate.swift */; };
-		AF3A69761A598D11000703FA /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = AF3A69751A598D11000703FA /* GameScene.sks */; };
 		AF3A69781A598D11000703FA /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3A69771A598D11000703FA /* GameScene.swift */; };
 		AF3A697A1A598D11000703FA /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3A69791A598D11000703FA /* GameViewController.swift */; };
 		AF3A697D1A598D11000703FA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF3A697B1A598D11000703FA /* Main.storyboard */; };
 		AF3A697F1A598D11000703FA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF3A697E1A598D11000703FA /* Images.xcassets */; };
 		AF3A69821A598D11000703FA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF3A69801A598D11000703FA /* LaunchScreen.xib */; };
 		AF3A698E1A598D11000703FA /* GymJimTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3A698D1A598D11000703FA /* GymJimTests.swift */; };
+		AF3A69981A598D4D000703FA /* GlobalVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3A69971A598D4D000703FA /* GlobalVariables.swift */; };
+		AF3A69A71A598DA9000703FA /* bgMusic1.wav in Resources */ = {isa = PBXBuildFile; fileRef = AF3A699A1A598DA8000703FA /* bgMusic1.wav */; };
+		AF3A69A81A598DA9000703FA /* button.wav in Resources */ = {isa = PBXBuildFile; fileRef = AF3A699B1A598DA8000703FA /* button.wav */; };
+		AF3A69A91A598DA9000703FA /* coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = AF3A699C1A598DA8000703FA /* coin.wav */; };
+		AF3A69AA1A598DA9000703FA /* crawler_die.wav in Resources */ = {isa = PBXBuildFile; fileRef = AF3A699D1A598DA8000703FA /* crawler_die.wav */; };
+		AF3A69AB1A598DA9000703FA /* Game Over.wav in Resources */ = {isa = PBXBuildFile; fileRef = AF3A699E1A598DA8000703FA /* Game Over.wav */; };
+		AF3A69AC1A598DA9000703FA /* Leaning-Wall-Short.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AF3A699F1A598DA8000703FA /* Leaning-Wall-Short.mp3 */; };
+		AF3A69AD1A598DA9000703FA /* lose.wav in Resources */ = {isa = PBXBuildFile; fileRef = AF3A69A01A598DA8000703FA /* lose.wav */; };
+		AF3A69AE1A598DA9000703FA /* splash.wav in Resources */ = {isa = PBXBuildFile; fileRef = AF3A69A11A598DA9000703FA /* splash.wav */; };
+		AF3A69AF1A598DA9000703FA /* whoosh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AF3A69A21A598DA9000703FA /* whoosh.mp3 */; };
+		AF3A69B01A598DA9000703FA /* window in.wav in Resources */ = {isa = PBXBuildFile; fileRef = AF3A69A31A598DA9000703FA /* window in.wav */; };
+		AF3A69B11A598DA9000703FA /* window out.wav in Resources */ = {isa = PBXBuildFile; fileRef = AF3A69A41A598DA9000703FA /* window out.wav */; };
+		AF3A69B21A598DA9000703FA /* game.atlas in Resources */ = {isa = PBXBuildFile; fileRef = AF3A69A61A598DA9000703FA /* game.atlas */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,7 +43,6 @@
 		AF3A696E1A598D11000703FA /* GymJim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GymJim.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF3A69721A598D11000703FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AF3A69731A598D11000703FA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		AF3A69751A598D11000703FA /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		AF3A69771A598D11000703FA /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		AF3A69791A598D11000703FA /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		AF3A697C1A598D11000703FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -40,6 +51,19 @@
 		AF3A69871A598D11000703FA /* GymJimTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GymJimTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF3A698C1A598D11000703FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AF3A698D1A598D11000703FA /* GymJimTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymJimTests.swift; sourceTree = "<group>"; };
+		AF3A69971A598D4D000703FA /* GlobalVariables.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalVariables.swift; sourceTree = "<group>"; };
+		AF3A699A1A598DA8000703FA /* bgMusic1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bgMusic1.wav; sourceTree = "<group>"; };
+		AF3A699B1A598DA8000703FA /* button.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = button.wav; sourceTree = "<group>"; };
+		AF3A699C1A598DA8000703FA /* coin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = coin.wav; sourceTree = "<group>"; };
+		AF3A699D1A598DA8000703FA /* crawler_die.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = crawler_die.wav; sourceTree = "<group>"; };
+		AF3A699E1A598DA8000703FA /* Game Over.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Game Over.wav"; sourceTree = "<group>"; };
+		AF3A699F1A598DA8000703FA /* Leaning-Wall-Short.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Leaning-Wall-Short.mp3"; sourceTree = "<group>"; };
+		AF3A69A01A598DA8000703FA /* lose.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = lose.wav; sourceTree = "<group>"; };
+		AF3A69A11A598DA9000703FA /* splash.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = splash.wav; sourceTree = "<group>"; };
+		AF3A69A21A598DA9000703FA /* whoosh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = whoosh.mp3; sourceTree = "<group>"; };
+		AF3A69A31A598DA9000703FA /* window in.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "window in.wav"; sourceTree = "<group>"; };
+		AF3A69A41A598DA9000703FA /* window out.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "window out.wav"; sourceTree = "<group>"; };
+		AF3A69A61A598DA9000703FA /* game.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = game.atlas; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,12 +106,14 @@
 			isa = PBXGroup;
 			children = (
 				AF3A69731A598D11000703FA /* AppDelegate.swift */,
-				AF3A69751A598D11000703FA /* GameScene.sks */,
 				AF3A69771A598D11000703FA /* GameScene.swift */,
+				AF3A69971A598D4D000703FA /* GlobalVariables.swift */,
 				AF3A69791A598D11000703FA /* GameViewController.swift */,
 				AF3A697B1A598D11000703FA /* Main.storyboard */,
 				AF3A697E1A598D11000703FA /* Images.xcassets */,
 				AF3A69801A598D11000703FA /* LaunchScreen.xib */,
+				AF3A69991A598DA8000703FA /* Sounds */,
+				AF3A69A51A598DA9000703FA /* TextureAtlases */,
 				AF3A69711A598D11000703FA /* Supporting Files */,
 			);
 			path = GymJim;
@@ -116,6 +142,32 @@
 				AF3A698C1A598D11000703FA /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AF3A69991A598DA8000703FA /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				AF3A699A1A598DA8000703FA /* bgMusic1.wav */,
+				AF3A699B1A598DA8000703FA /* button.wav */,
+				AF3A699C1A598DA8000703FA /* coin.wav */,
+				AF3A699D1A598DA8000703FA /* crawler_die.wav */,
+				AF3A699E1A598DA8000703FA /* Game Over.wav */,
+				AF3A699F1A598DA8000703FA /* Leaning-Wall-Short.mp3 */,
+				AF3A69A01A598DA8000703FA /* lose.wav */,
+				AF3A69A11A598DA9000703FA /* splash.wav */,
+				AF3A69A21A598DA9000703FA /* whoosh.mp3 */,
+				AF3A69A31A598DA9000703FA /* window in.wav */,
+				AF3A69A41A598DA9000703FA /* window out.wav */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
+		AF3A69A51A598DA9000703FA /* TextureAtlases */ = {
+			isa = PBXGroup;
+			children = (
+				AF3A69A61A598DA9000703FA /* game.atlas */,
+			);
+			path = TextureAtlases;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -198,10 +250,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF3A69AF1A598DA9000703FA /* whoosh.mp3 in Resources */,
 				AF3A69821A598D11000703FA /* LaunchScreen.xib in Resources */,
+				AF3A69B21A598DA9000703FA /* game.atlas in Resources */,
+				AF3A69AC1A598DA9000703FA /* Leaning-Wall-Short.mp3 in Resources */,
+				AF3A69A81A598DA9000703FA /* button.wav in Resources */,
 				AF3A697F1A598D11000703FA /* Images.xcassets in Resources */,
-				AF3A69761A598D11000703FA /* GameScene.sks in Resources */,
+				AF3A69AE1A598DA9000703FA /* splash.wav in Resources */,
+				AF3A69B11A598DA9000703FA /* window out.wav in Resources */,
+				AF3A69A91A598DA9000703FA /* coin.wav in Resources */,
+				AF3A69B01A598DA9000703FA /* window in.wav in Resources */,
+				AF3A69AD1A598DA9000703FA /* lose.wav in Resources */,
 				AF3A697D1A598D11000703FA /* Main.storyboard in Resources */,
+				AF3A69A71A598DA9000703FA /* bgMusic1.wav in Resources */,
+				AF3A69AA1A598DA9000703FA /* crawler_die.wav in Resources */,
+				AF3A69AB1A598DA9000703FA /* Game Over.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,6 +284,7 @@
 			files = (
 				AF3A69781A598D11000703FA /* GameScene.swift in Sources */,
 				AF3A697A1A598D11000703FA /* GameViewController.swift in Sources */,
+				AF3A69981A598D4D000703FA /* GlobalVariables.swift in Sources */,
 				AF3A69741A598D11000703FA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
