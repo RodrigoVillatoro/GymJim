@@ -27,6 +27,8 @@
 		AF3A69B01A598DA9000703FA /* window in.wav in Resources */ = {isa = PBXBuildFile; fileRef = AF3A69A31A598DA9000703FA /* window in.wav */; };
 		AF3A69B11A598DA9000703FA /* window out.wav in Resources */ = {isa = PBXBuildFile; fileRef = AF3A69A41A598DA9000703FA /* window out.wav */; };
 		AF3A69B21A598DA9000703FA /* game.atlas in Resources */ = {isa = PBXBuildFile; fileRef = AF3A69A61A598DA9000703FA /* game.atlas */; };
+		AFBBB4541A5B395E0088E570 /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBB4531A5B395E0088E570 /* AudioController.swift */; };
+		AFBBB4561A5B39D70088E570 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFBBB4551A5B39D70088E570 /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +66,8 @@
 		AF3A69A31A598DA9000703FA /* window in.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "window in.wav"; sourceTree = "<group>"; };
 		AF3A69A41A598DA9000703FA /* window out.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "window out.wav"; sourceTree = "<group>"; };
 		AF3A69A61A598DA9000703FA /* game.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = game.atlas; sourceTree = "<group>"; };
+		AFBBB4531A5B395E0088E570 /* AudioController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioController.swift; sourceTree = "<group>"; };
+		AFBBB4551A5B39D70088E570 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AFBBB4561A5B39D70088E570 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +92,7 @@
 		AF3A69651A598D11000703FA = {
 			isa = PBXGroup;
 			children = (
+				AFBBB4551A5B39D70088E570 /* AVFoundation.framework */,
 				AF3A69701A598D11000703FA /* GymJim */,
 				AF3A698A1A598D11000703FA /* GymJimTests */,
 				AF3A696F1A598D11000703FA /* Products */,
@@ -107,6 +113,7 @@
 			children = (
 				AF3A69731A598D11000703FA /* AppDelegate.swift */,
 				AF3A69771A598D11000703FA /* GameScene.swift */,
+				AFBBB4531A5B395E0088E570 /* AudioController.swift */,
 				AF3A69971A598D4D000703FA /* GlobalVariables.swift */,
 				AF3A69791A598D11000703FA /* GameViewController.swift */,
 				AF3A697B1A598D11000703FA /* Main.storyboard */,
@@ -282,6 +289,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AFBBB4541A5B395E0088E570 /* AudioController.swift in Sources */,
 				AF3A69781A598D11000703FA /* GameScene.swift in Sources */,
 				AF3A697A1A598D11000703FA /* GameViewController.swift in Sources */,
 				AF3A69981A598D4D000703FA /* GlobalVariables.swift in Sources */,
@@ -479,6 +487,7 @@
 				AF3A69931A598D11000703FA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		AF3A69941A598D11000703FA /* Build configuration list for PBXNativeTarget "GymJimTests" */ = {
 			isa = XCConfigurationList;
@@ -487,6 +496,7 @@
 				AF3A69961A598D11000703FA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

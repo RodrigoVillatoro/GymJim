@@ -9,6 +9,9 @@
 import Foundation
 import SpriteKit
 
+// AudioController
+var audioController = AudioController()
+
 let screenWidth: CGFloat = 1536
 let screenHeight: CGFloat = 2048
 let startingY: CGFloat = screenHeight * 0.75
