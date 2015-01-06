@@ -8,7 +8,15 @@
 
 import SpriteKit
 
+protocol MySceneDelegate {
+
+}
+
+
 class GameScene: SKScene, SKPhysicsContactDelegate {
+    
+    // Delegate
+    var sceneDelegate: MySceneDelegate!
     
     // Game Over
     var gameOver = false
@@ -29,7 +37,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // Character
     let character = SKSpriteNode(imageNamed: "character")
     var characterPosition = CurrentPosition.Center
-    let moveY: CGFloat = 300
     
     // Character Animations
     let pointLeft = SKAction.animateWithTextures([SKTexture(imageNamed: "characterLeft"), SKTexture(imageNamed: "character")], timePerFrame: 0.1)
@@ -41,17 +48,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let characterNode = SKNode()
     let platformsNode = SKNode()
     let buttonsNode = SKNode()
-    
-    // Buttons
-    let centerButton = SKSpriteNode(imageNamed: "center")
-    let leftButton = SKSpriteNode(imageNamed: "left")
-    let rightButton = SKSpriteNode(imageNamed: "right")
-    
+
     // Sounds
     let playBreakPlatformSound = SKAction.playSoundFileNamed("crawler_die.wav", waitForCompletion: false)
     let playCharacterMoveSound = SKAction.playSoundFileNamed("whoosh.mp3", waitForCompletion: false)
     let playCoinSound = SKAction.playSoundFileNamed("coin.wav", waitForCompletion: false)
     let playGameOverSound = SKAction.playSoundFileNamed("Game Over.wav", waitForCompletion: false)
+    
+    
+    init(size: CGSize, delegate: MySceneDelegate) {
+        
+        super.init(size: size)
+        sceneDelegate = delegate
+        
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     
     override func didMoveToView(view: SKView) {
         
@@ -63,7 +78,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Physics
         physicsWorld.contactDelegate = self
-        physicsWorld.gravity = CGVectorMake(0.0, -20)
         
         // Spawn platform
         spawnPlatforms()
@@ -82,65 +96,49 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(character)
         character.runAction(SKAction.repeatActionForever(breathe))
         
-        // Add water
-        for var i = 0; i <= 1; ++i {
-            
-            // Water back
-            let waterBack = SKSpriteNode(imageNamed: "water1")
-            waterBack.anchorPoint = CGPointMake(0.0, 0.0)
-            waterBack.position = CGPointMake(self.size.width * CGFloat(i), 0)
-            waterBack.zPosition = Positions.WaterBack.rawValue
-            waterBack.name = "waterBack"
-            worldNode.addChild(waterBack)
-            
-            // Action
-            let moveLeft = SKAction.moveByX(-screenWidth, y: 0, duration: 20)
-            let resetBack = SKAction.moveByX(screenWidth, y: 0, duration: 0)
-            waterBack.runAction(SKAction.repeatActionForever(SKAction.sequence([moveLeft, resetBack])))
-            
-            // Water Middle
-            let waterMiddle = SKSpriteNode(imageNamed: "water2")
-            waterMiddle.anchorPoint = CGPointMake(0.0, 0.0)
-            waterMiddle.position = CGPointMake(self.size.width * -CGFloat(i), 0)
-            waterMiddle.zPosition = Positions.WaterMiddle.rawValue
-            waterMiddle.name = "waterMiddle"
-            worldNode.addChild(waterMiddle)
-            
-            // Action
-            let moveRight = SKAction.moveByX(screenWidth, y: 0, duration: 17)
-            let resetMiddle = SKAction.moveByX(-screenWidth, y: 0, duration: 0)
-            waterMiddle.runAction(SKAction.repeatActionForever(SKAction.sequence([moveRight, resetMiddle])))
-            
-            // Water front
-            let waterFront = SKSpriteNode(imageNamed: "water3")
-            waterFront.anchorPoint = CGPointMake(0.0, 0.0)
-            waterFront.position = CGPointMake(self.size.width * CGFloat(i), 0)
-            waterFront.zPosition = Positions.WaterFront.rawValue
-            waterFront.name = "waterFront"
-            worldNode.addChild(waterFront)
-            
-            // Action
-            let moveLeft1 = SKAction.moveByX(-screenWidth, y: 0, duration: 15)
-            let resetFront = SKAction.moveByX(screenWidth, y: 0, duration: 0)
-            waterFront.runAction(SKAction.repeatActionForever(SKAction.sequence([moveLeft1, resetFront])))
-            
-        }
-        
-        // Add buttons
-        centerButton.position = CGPointMake(self.size.width/2, 150)
-        centerButton.zPosition = Positions.Buttons.rawValue
-        centerButton.name = "center"
-        buttonsNode.addChild(centerButton)
-        
-        leftButton.position = CGPointMake(centerButton.position.x - centerButton.size.width/2 - leftButton.size.width/2, 150)
-        leftButton.zPosition = Positions.Buttons.rawValue
-        leftButton.name = "left"
-        buttonsNode.addChild(leftButton)
-        
-        rightButton.position = CGPointMake(centerButton.position.x + centerButton.size.width/2 + rightButton.size.width/2, 150)
-        rightButton.zPosition = Positions.Buttons.rawValue
-        rightButton.name = "right"
-        buttonsNode.addChild(rightButton)
+//        // Add water
+//        for var i = 0; i <= 1; ++i {
+//            
+//            // Water back
+//            let waterBack = SKSpriteNode(imageNamed: "water1")
+//            waterBack.anchorPoint = CGPointMake(0.0, 0.0)
+//            waterBack.position = CGPointMake(self.size.width * CGFloat(i), 0)
+//            waterBack.zPosition = Positions.WaterBack.rawValue
+//            waterBack.name = "waterBack"
+//            worldNode.addChild(waterBack)
+//            
+//            // Action
+//            let moveLeft = SKAction.moveByX(-screenWidth, y: 0, duration: 20)
+//            let resetBack = SKAction.moveByX(screenWidth, y: 0, duration: 0)
+//            waterBack.runAction(SKAction.repeatActionForever(SKAction.sequence([moveLeft, resetBack])))
+//            
+//            // Water Middle
+//            let waterMiddle = SKSpriteNode(imageNamed: "water2")
+//            waterMiddle.anchorPoint = CGPointMake(0.0, 0.0)
+//            waterMiddle.position = CGPointMake(self.size.width * -CGFloat(i), 0)
+//            waterMiddle.zPosition = Positions.WaterMiddle.rawValue
+//            waterMiddle.name = "waterMiddle"
+//            worldNode.addChild(waterMiddle)
+//            
+//            // Action
+//            let moveRight = SKAction.moveByX(screenWidth, y: 0, duration: 17)
+//            let resetMiddle = SKAction.moveByX(-screenWidth, y: 0, duration: 0)
+//            waterMiddle.runAction(SKAction.repeatActionForever(SKAction.sequence([moveRight, resetMiddle])))
+//            
+//            // Water front
+//            let waterFront = SKSpriteNode(imageNamed: "water3")
+//            waterFront.anchorPoint = CGPointMake(0.0, 0.0)
+//            waterFront.position = CGPointMake(self.size.width * CGFloat(i), 0)
+//            waterFront.zPosition = Positions.WaterFront.rawValue
+//            waterFront.name = "waterFront"
+//            worldNode.addChild(waterFront)
+//            
+//            // Action
+//            let moveLeft1 = SKAction.moveByX(-screenWidth, y: 0, duration: 15)
+//            let resetFront = SKAction.moveByX(screenWidth, y: 0, duration: 0)
+//            waterFront.runAction(SKAction.repeatActionForever(SKAction.sequence([moveLeft1, resetFront])))
+//            
+//        }
         
         // Add HUD
         let coin = SKSpriteNode(imageNamed: "coin1")
@@ -157,83 +155,67 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.zPosition = Positions.Buttons.rawValue
         worldNode.addChild(scoreLabel)
         
+        // Gesture Recognizers
+        addGestureRecognizers()
+        
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    func addGestureRecognizers() {
         
-        if !gameOver {
-            
-            // Character can only move if he is standing on a platform
-            if currentPlatform != nil {
+        // Right
+        var swipeRight = UISwipeGestureRecognizer(target: self, action: "swiped:")
+        swipeRight.direction = UISwipeGestureRecognizerDirection.Right
+        self.view?.addGestureRecognizer(swipeRight)
+        
+        // Left
+        var swipeLeft = UISwipeGestureRecognizer(target: self, action: "swiped:")
+        swipeLeft.direction = UISwipeGestureRecognizerDirection.Left
+        self.view?.addGestureRecognizer(swipeLeft)
+        
+        // Down
+        var swipeDown = UISwipeGestureRecognizer(target: self, action: "swiped:")
+        swipeDown.direction = UISwipeGestureRecognizerDirection.Down
+        self.view?.addGestureRecognizer(swipeDown)
+        
+    }
+    
+    func swiped(gesture: UIGestureRecognizer) {
+        
+        // Can only swipe if user has touched a platform
+        if currentPlatform != nil {
+        
+            if let swipeGesture = gesture as? UISwipeGestureRecognizer {
                 
-                var touch = touches.anyObject() as UITouch!
-                var touchLocation = touch.locationInNode(self)
-                var node = nodeAtPoint(touchLocation)
-                
-                
-                //                if touchLocation.y <= self.size.height * 0.25 {
-                //
-                //                    if touchLocation.x <= (leftButton.position.x + leftButton.size.width/2) {
-                //
-                //                        runAction(playCharacterMoveSound)
-                //                        character.runAction(pointLeft)
-                //                        updateCharacterPosition(tappedRight: false)
-                //
-                //                    } else if touchLocation.x >= (rightButton.position.x - rightButton.size.width/2) {
-                //
-                //                        runAction(playCharacterMoveSound)
-                //                        character.runAction(pointRight)
-                //                        updateCharacterPosition(tappedRight: true)
-                //
-                //                    } else {
-                //
-                //                        // Break Platform
-                //                        self.runAction(playBreakPlatformSound)
-                //                        currentPlatform!.removeFromParent()
-                //                        currentPlatform = nil
-                //
-                //                    }
-                //
-                //                }
-                
-                
-                if CGRectContainsPoint(CGRectInset(leftButton.frame, 0, -350), touchLocation) {
-                    runAction(playCharacterMoveSound)
-                    character.runAction(pointLeft)
-                    updateCharacterPosition(tappedRight: false)
-                } else if CGRectContainsPoint(CGRectInset(rightButton.frame, 0, -350), touchLocation) {
+                switch swipeGesture.direction {
+                    
+                case UISwipeGestureRecognizerDirection.Right:
                     runAction(playCharacterMoveSound)
                     character.runAction(pointRight)
                     updateCharacterPosition(tappedRight: true)
-                } else if CGRectContainsPoint(CGRectInset(centerButton.frame, 0, -250), touchLocation) {
+                    
+                case UISwipeGestureRecognizerDirection.Left:
+                    runAction(playCharacterMoveSound)
+                    character.runAction(pointLeft)
+                    updateCharacterPosition(tappedRight: false)
+                    
                     // Break Platform
+                case UISwipeGestureRecognizerDirection.Down:
                     self.runAction(playBreakPlatformSound)
-                    currentPlatform!.removeFromParent()
+                    currentPlatform?.removeFromParent()
                     currentPlatform = nil
+                    character.physicsBody?.applyImpulse(CGVectorMake(0, -10000))
+                    
+                default:
+                    break
+                    
                 }
                 
-                
-                //                if node.name == "left" {
-                //                    runAction(playCharacterMoveSound)
-                //                    character.runAction(pointLeft)
-                //                    updateCharacterPosition(tappedRight: false)
-                //                } else if node.name == "right" {
-                //                    runAction(playCharacterMoveSound)
-                //                    character.runAction(pointRight)
-                //                    updateCharacterPosition(tappedRight: true)
-                //                } else if node.name == "center" {
-                //                    // Break Platform
-                //                    self.runAction(playBreakPlatformSound)
-                //                    currentPlatform!.removeFromParent()
-                //                    currentPlatform = nil
-                //                    return
-                //                }
             }
-            
-        }
         
+        }
+ 
     }
-    
+
     
     func didBeginContact(contact: SKPhysicsContact) {
         
@@ -433,7 +415,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         runAction(SKAction.sequence([SKAction.waitForDuration(1.0), SKAction.runBlock({
             
-            let scene = GameScene(size: CGSize(width: screenWidth, height: screenHeight))
+            let scene = GameScene(size: CGSize(width: screenWidth, height: screenHeight), delegate: self.sceneDelegate)
             scene.scaleMode = .AspectFill
             self.view?.presentScene(scene)
             

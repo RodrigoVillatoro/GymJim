@@ -21,15 +21,11 @@ class AudioController: NSObject {
     }
 
     func configureAudioSession() {
-        
-        if audioSession.otherAudioPlaying {
-            audioSession.setCategory(AVAudioSessionCategoryAmbient, error: nil)
-        }
-        
+        audioSession.setCategory(AVAudioSessionCategoryAmbient, error: nil)
     }
     
     func configureAudioPlayer() {
-        let backgroundMusicPath = NSBundle.mainBundle().pathForResource("bgMusic1", ofType: "wav")
+        let backgroundMusicPath = NSBundle.mainBundle().pathForResource("bgMusic1", ofType: "mp3")
         let backgroundMusicURL = NSURL.fileURLWithPath(backgroundMusicPath!)
         backgroundMusicPlayer = AVAudioPlayer(contentsOfURL: backgroundMusicURL, error: nil)
         backgroundMusicPlayer.numberOfLoops = -1

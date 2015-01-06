@@ -8,8 +8,12 @@
 
 import UIKit
 import SpriteKit
+import iAd
 
-class GameViewController: UIViewController {
+class GameViewController: UIViewController, MySceneDelegate {
+    
+    // iAd
+    var bannerView = ADBannerView()
     
     override func viewDidLoad() {
         
@@ -25,12 +29,15 @@ class GameViewController: UIViewController {
         skView.ignoresSiblingOrder = true
         
         /* Set the scale mode to scale to fit the window */
-        let scene = GameScene(size: CGSize(width: screenWidth, height: screenHeight))
+        let scene = GameScene(size: CGSize(width: screenWidth, height: screenHeight), delegate: self)
         scene.scaleMode = .AspectFill
         
         skView.presentScene(scene)
         
+        // iAds
+        self.canDisplayBannerAds = true
         
+
     }
     
     override func shouldAutorotate() -> Bool {
@@ -53,4 +60,10 @@ class GameViewController: UIViewController {
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
+    
+    // MARK: - ADS
+    
+
+    
+    
 }
