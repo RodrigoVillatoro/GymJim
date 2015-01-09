@@ -28,8 +28,12 @@
 		AF3A69B01A598DA9000703FA /* window in.wav in Resources */ = {isa = PBXBuildFile; fileRef = AF3A69A31A598DA9000703FA /* window in.wav */; };
 		AF3A69B11A598DA9000703FA /* window out.wav in Resources */ = {isa = PBXBuildFile; fileRef = AF3A69A41A598DA9000703FA /* window out.wav */; };
 		AF3A69B21A598DA9000703FA /* game.atlas in Resources */ = {isa = PBXBuildFile; fileRef = AF3A69A61A598DA9000703FA /* game.atlas */; };
+		AF4F1A471A5CE69A00AD0A0A /* mainMenu.png in Resources */ = {isa = PBXBuildFile; fileRef = AF4F1A451A5CE69A00AD0A0A /* mainMenu.png */; };
+		AF5292EC1A604D8C000EB28F /* ui.atlas in Resources */ = {isa = PBXBuildFile; fileRef = AF5292EB1A604D8C000EB28F /* ui.atlas */; };
 		AFBBB4541A5B395E0088E570 /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBB4531A5B395E0088E570 /* AudioController.swift */; };
 		AFBBB4561A5B39D70088E570 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFBBB4551A5B39D70088E570 /* AVFoundation.framework */; };
+		AFC582E91A5CE98500539E0E /* playButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AFC582E81A5CE98500539E0E /* playButton@2x.png */; };
+		AFC582EB1A5CEB5D00539E0E /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC582EA1A5CEB5D00539E0E /* MainMenuViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,8 +72,12 @@
 		AF3A69A31A598DA9000703FA /* window in.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "window in.wav"; sourceTree = "<group>"; };
 		AF3A69A41A598DA9000703FA /* window out.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "window out.wav"; sourceTree = "<group>"; };
 		AF3A69A61A598DA9000703FA /* game.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = game.atlas; sourceTree = "<group>"; };
+		AF4F1A451A5CE69A00AD0A0A /* mainMenu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainMenu.png; sourceTree = "<group>"; };
+		AF5292EB1A604D8C000EB28F /* ui.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = ui.atlas; sourceTree = "<group>"; };
 		AFBBB4531A5B395E0088E570 /* AudioController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioController.swift; sourceTree = "<group>"; };
 		AFBBB4551A5B39D70088E570 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		AFC582E81A5CE98500539E0E /* playButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "playButton@2x.png"; sourceTree = "<group>"; };
+		AFC582EA1A5CEB5D00539E0E /* MainMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,11 +128,11 @@
 				AF3A69971A598D4D000703FA /* GlobalVariables.swift */,
 				AF3A69771A598D11000703FA /* GameScene.swift */,
 				AF3A69791A598D11000703FA /* GameViewController.swift */,
+				AFC582EA1A5CEB5D00539E0E /* MainMenuViewController.swift */,
 				AF3A697B1A598D11000703FA /* Main.storyboard */,
 				AF3A697E1A598D11000703FA /* Images.xcassets */,
 				AF3A69801A598D11000703FA /* LaunchScreen.xib */,
-				AF3A69991A598DA8000703FA /* Sounds */,
-				AF3A69A51A598DA9000703FA /* TextureAtlases */,
+				AF4F1A431A5CE65300AD0A0A /* Resourses */,
 				AF3A69711A598D11000703FA /* Supporting Files */,
 			);
 			path = GymJim;
@@ -176,9 +184,29 @@
 		AF3A69A51A598DA9000703FA /* TextureAtlases */ = {
 			isa = PBXGroup;
 			children = (
+				AF5292EB1A604D8C000EB28F /* ui.atlas */,
 				AF3A69A61A598DA9000703FA /* game.atlas */,
 			);
 			path = TextureAtlases;
+			sourceTree = "<group>";
+		};
+		AF4F1A431A5CE65300AD0A0A /* Resourses */ = {
+			isa = PBXGroup;
+			children = (
+				AF4F1A441A5CE69A00AD0A0A /* images */,
+				AF3A69991A598DA8000703FA /* Sounds */,
+				AF3A69A51A598DA9000703FA /* TextureAtlases */,
+			);
+			name = Resourses;
+			sourceTree = "<group>";
+		};
+		AF4F1A441A5CE69A00AD0A0A /* images */ = {
+			isa = PBXGroup;
+			children = (
+				AFC582E81A5CE98500539E0E /* playButton@2x.png */,
+				AF4F1A451A5CE69A00AD0A0A /* mainMenu.png */,
+			);
+			path = images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -262,7 +290,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF3A69AF1A598DA9000703FA /* whoosh.mp3 in Resources */,
+				AFC582E91A5CE98500539E0E /* playButton@2x.png in Resources */,
 				AF3A69821A598D11000703FA /* LaunchScreen.xib in Resources */,
+				AF5292EC1A604D8C000EB28F /* ui.atlas in Resources */,
 				AF3A69B21A598DA9000703FA /* game.atlas in Resources */,
 				AF3A69AC1A598DA9000703FA /* Leaning-Wall-Short.mp3 in Resources */,
 				AF3A69A81A598DA9000703FA /* button.wav in Resources */,
@@ -270,6 +300,7 @@
 				AF3A69AE1A598DA9000703FA /* splash.wav in Resources */,
 				AF2800241A5BD94B00272A02 /* bgMusic1.mp3 in Resources */,
 				AF3A69B11A598DA9000703FA /* window out.wav in Resources */,
+				AF4F1A471A5CE69A00AD0A0A /* mainMenu.png in Resources */,
 				AF3A69A91A598DA9000703FA /* coin.wav in Resources */,
 				AF3A69B01A598DA9000703FA /* window in.wav in Resources */,
 				AF3A69AD1A598DA9000703FA /* lose.wav in Resources */,
@@ -293,6 +324,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AFC582EB1A5CEB5D00539E0E /* MainMenuViewController.swift in Sources */,
 				AFBBB4541A5B395E0088E570 /* AudioController.swift in Sources */,
 				AF3A69781A598D11000703FA /* GameScene.swift in Sources */,
 				AF3A697A1A598D11000703FA /* GameViewController.swift in Sources */,

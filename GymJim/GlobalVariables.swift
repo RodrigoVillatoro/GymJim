@@ -31,6 +31,13 @@ enum CurrentPosition: Int {
     
 }
 
+enum GameState {
+    case Instructions
+    case Playing
+    case GameOver
+    case Upgrading
+}
+
 enum PhysicsCategory {
     static let Platform =           1 << 0 as UInt32
     static let Treasure =           1 << 1 as UInt32
@@ -46,5 +53,24 @@ enum Positions: CGFloat {
     case WaterBack
     case WaterMiddle
     case WaterFront
+    case Board
     case Buttons
+    case Labels
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

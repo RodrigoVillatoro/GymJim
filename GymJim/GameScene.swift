@@ -9,7 +9,6 @@
 import SpriteKit
 
 protocol MySceneDelegate {
-
 }
 
 
@@ -17,10 +16,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // Delegate
     var sceneDelegate: MySceneDelegate!
-    
-    // Game Over
-    var gameOver = false
-    
+
     // Score
     var score: Int = 0
     let scoreLabel = SKLabelNode(text: "x 0")
@@ -47,7 +43,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let worldNode = SKNode()
     let characterNode = SKNode()
     let platformsNode = SKNode()
-    let buttonsNode = SKNode()
+    let gameOverNode = SKNode()
 
     // Sounds
     let playBreakPlatformSound = SKAction.playSoundFileNamed("crawler_die.wav", waitForCompletion: false)
@@ -55,18 +51,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let playCoinSound = SKAction.playSoundFileNamed("coin.wav", waitForCompletion: false)
     let playGameOverSound = SKAction.playSoundFileNamed("Game Over.wav", waitForCompletion: false)
     
+    // Atlas
+    var gameAtlas = SKTextureAtlas(named: "game")
+    var uiAtlas = SKTextureAtlas(named: "ui")
+    
+    // Game state
+    var gameState = GameState.Playing
+    
+    // UI
+    var playButton = SKSpriteNode()
+    
     
     init(size: CGSize, delegate: MySceneDelegate) {
-        
         super.init(size: size)
         sceneDelegate = delegate
-        
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
     override func didMoveToView(view: SKView) {
         
@@ -74,7 +77,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(worldNode)
         worldNode.addChild(characterNode)
         worldNode.addChild(platformsNode)
-        worldNode.addChild(buttonsNode)
+        addChild(gameOverNode)
         
         // Physics
         physicsWorld.contactDelegate = self
@@ -96,52 +99,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(character)
         character.runAction(SKAction.repeatActionForever(breathe))
         
-//        // Add water
-//        for var i = 0; i <= 1; ++i {
-//            
-//            // Water back
-//            let waterBack = SKSpriteNode(imageNamed: "water1")
-//            waterBack.anchorPoint = CGPointMake(0.0, 0.0)
-//            waterBack.position = CGPointMake(self.size.width * CGFloat(i), 0)
-//            waterBack.zPosition = Positions.WaterBack.rawValue
-//            waterBack.name = "waterBack"
-//            worldNode.addChild(waterBack)
-//            
-//            // Action
-//            let moveLeft = SKAction.moveByX(-screenWidth, y: 0, duration: 20)
-//            let resetBack = SKAction.moveByX(screenWidth, y: 0, duration: 0)
-//            waterBack.runAction(SKAction.repeatActionForever(SKAction.sequence([moveLeft, resetBack])))
-//            
-//            // Water Middle
-//            let waterMiddle = SKSpriteNode(imageNamed: "water2")
-//            waterMiddle.anchorPoint = CGPointMake(0.0, 0.0)
-//            waterMiddle.position = CGPointMake(self.size.width * -CGFloat(i), 0)
-//            waterMiddle.zPosition = Positions.WaterMiddle.rawValue
-//            waterMiddle.name = "waterMiddle"
-//            worldNode.addChild(waterMiddle)
-//            
-//            // Action
-//            let moveRight = SKAction.moveByX(screenWidth, y: 0, duration: 17)
-//            let resetMiddle = SKAction.moveByX(-screenWidth, y: 0, duration: 0)
-//            waterMiddle.runAction(SKAction.repeatActionForever(SKAction.sequence([moveRight, resetMiddle])))
-//            
-//            // Water front
-//            let waterFront = SKSpriteNode(imageNamed: "water3")
-//            waterFront.anchorPoint = CGPointMake(0.0, 0.0)
-//            waterFront.position = CGPointMake(self.size.width * CGFloat(i), 0)
-//            waterFront.zPosition = Positions.WaterFront.rawValue
-//            waterFront.name = "waterFront"
-//            worldNode.addChild(waterFront)
-//            
-//            // Action
-//            let moveLeft1 = SKAction.moveByX(-screenWidth, y: 0, duration: 15)
-//            let resetFront = SKAction.moveByX(screenWidth, y: 0, duration: 0)
-//            waterFront.runAction(SKAction.repeatActionForever(SKAction.sequence([moveLeft1, resetFront])))
-//            
-//        }
-        
         // Add HUD
-        let coin = SKSpriteNode(imageNamed: "coin1")
+        let coin = SKSpriteNode(texture: gameAtlas.textureNamed("coin1"))
         coin.setScale(0.90)
         coin.position = CGPointMake(self.size.width * 0.40, self.size.height * 0.95)
         coin.zPosition = Positions.Buttons.rawValue
@@ -158,6 +117,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Gesture Recognizers
         addGestureRecognizers()
         
+    }
+    
+    // MARK: - Touches and gestures
+    
+    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        
+        if gameState == .Playing {
+            for touch in touches {
+                let touchLocation = touch.locationInNode(self)
+                if touchLocation.x <= self.size.width/2 {
+                    
+                } else {
+                
+                }
+            }
+        } else if gameState == .GameOver {
+            for touch in touches {
+                let touchLocation = touch.locationInNode(self)
+                if CGRectContainsPoint(playButton.frame, touchLocation) {
+                    startNewGame()
+                }
+            }
+        }
     }
     
     func addGestureRecognizers() {
@@ -182,7 +164,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func swiped(gesture: UIGestureRecognizer) {
         
         // Can only swipe if user has touched a platform
-        if currentPlatform != nil {
+        if currentPlatform != nil && gameState == .Playing {
         
             if let swipeGesture = gesture as? UISwipeGestureRecognizer {
                 
@@ -255,8 +237,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             if firstBody.categoryBitMask == PhysicsCategory.Treasure && secondBody.categoryBitMask == PhysicsCategory.Character {
                 runAction(playCoinSound)
-                let treasureNode = firstBody.node as? SKSpriteNode
-                treasureNode!.removeFromParent()
+                let coin = firstBody.node as? SKSpriteNode
+                coin!.removeFromParent()
                 ++score
                 scoreLabel.text = "x \(score)"
             }
@@ -265,7 +247,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if (collision == PhysicsCategory.Axe | PhysicsCategory.Character) {
             
-            endGame()
+            switchToGameOver()
             
         }
         
@@ -331,9 +313,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 self.addTreasure(positionOnSceen: CGPointMake(self.size.width * 0.75, self.platformsAdded * -self.gapHeight))
                 
             }
-            
-            
-            
+
         })
         
         let wait = SKAction.waitForDuration(0.5)
@@ -344,7 +324,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func addPlatform(#positionOnSceen: CGPoint) {
         
         // Platform
-        let platform = SKSpriteNode(imageNamed: "platform")
+        let platform = SKSpriteNode(texture: gameAtlas.textureNamed("platform"))
         platform.position = positionOnSceen
         platform.zPosition = Positions.Platform.rawValue
         platform.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(200, 50))
@@ -361,21 +341,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func addTreasure(#positionOnSceen: CGPoint) {
         
         let textures = [
-            SKTexture(imageNamed: "coin1"),
-            SKTexture(imageNamed: "coin2"),
-            SKTexture(imageNamed: "coin3"),
-            SKTexture(imageNamed: "coin4"),
-            SKTexture(imageNamed: "coin5")
+            gameAtlas.textureNamed("coin1"),
+            gameAtlas.textureNamed("coin2"),
+            gameAtlas.textureNamed("coin3"),
+            gameAtlas.textureNamed("coin4"),
+            gameAtlas.textureNamed("coin5")
         ]
         
-        let item = SKSpriteNode(imageNamed: "coin1")
+        let item = SKSpriteNode(texture: gameAtlas.textureNamed("coin1"))
         item.position = CGPointMake(positionOnSceen.x, positionOnSceen.y + item.size.width/2)
         item.zPosition = Positions.Item.rawValue
         item.physicsBody = SKPhysicsBody(circleOfRadius: 50)
         item.physicsBody?.affectedByGravity = false
         item.physicsBody?.dynamic = false
         item.physicsBody?.categoryBitMask = PhysicsCategory.Treasure
-        item.name = "platform"
+        item.name = "coin"
         platformsNode.addChild(item)
         
         item.runAction(SKAction.repeatActionForever(SKAction.animateWithTextures(textures, timePerFrame: 0.1)))
@@ -385,13 +365,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func addAxe(#positionOnSceen: CGPoint) {
         
         let textures = [
-            SKTexture(imageNamed: "axe1"),
-            SKTexture(imageNamed: "axe2"),
-            SKTexture(imageNamed: "axe3"),
-            SKTexture(imageNamed: "axe4"),
+            gameAtlas.textureNamed("axe1"),
+            gameAtlas.textureNamed("axe2"),
+            gameAtlas.textureNamed("axe3"),
+            gameAtlas.textureNamed("axe4")
         ]
         
-        let item = SKSpriteNode(imageNamed: "axe1")
+        let item = SKSpriteNode(texture: gameAtlas.textureNamed("axe1"))
         item.position = CGPointMake(positionOnSceen.x, positionOnSceen.y + item.size.width/2)
         item.zPosition = Positions.Item.rawValue
         item.physicsBody = SKPhysicsBody(circleOfRadius: 50)
@@ -405,28 +385,63 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    func endGame() {
+    // MARK: - Switch To...
+    
+    func startNewGame() {
         
-        gameOver = true
-        runAction(playGameOverSound)
-        character.removeAllActions()
-        removeActionForKey("spawnPlatforms")
-        removeActionForKey("spawnItems")
-        
-        runAction(SKAction.sequence([SKAction.waitForDuration(1.0), SKAction.runBlock({
-            
-            let scene = GameScene(size: CGSize(width: screenWidth, height: screenHeight), delegate: self.sceneDelegate)
-            scene.scaleMode = .AspectFill
-            self.view?.presentScene(scene)
-            
-        })]))
+        let scene = GameScene(size: CGSize(width: screenWidth, height: screenHeight), delegate: self.sceneDelegate)
+        scene.scaleMode = .AspectFill
+        self.view?.presentScene(scene)
         
     }
     
+    func switchToGameOver() {
+        
+        gameState = .GameOver
+        
+        // Clean up scene and stop actions
+        character.removeAllActions()
+        character.texture = gameAtlas.textureNamed("tomb")
+        character.size = character.texture!.size()
+        runAction(playGameOverSound)
+        removeActionForKey("spawnPlatforms")
+        removeActionForKey("spawnItems")
+        
+        // Position gameOverNode outside of view, then make it visible via SKAction
+        gameOverNode.position.x = self.size.width
+        
+        // Add Game Over Board
+        let gameOverBoard = SKSpriteNode(texture: uiAtlas.textureNamed("board"))
+        gameOverBoard.position = CGPointMake(self.size.width/2, self.size.height/2)
+        gameOverBoard.zPosition = Positions.Board.rawValue
+        gameOverNode.addChild(gameOverBoard)
+    
+        // Play Button
+        playButton = SKSpriteNode(texture: uiAtlas.textureNamed("play-button"))
+        playButton.position = CGPointMake(self.size.width/2, self.size.height/2)
+        playButton.zPosition = Positions.Buttons.rawValue
+        gameOverNode.addChild(playButton)
+        
+        // Run action
+        let boardLeft = SKAction.moveToX(-50, duration: 0.4)
+        boardLeft.timingMode = SKActionTimingMode.EaseInEaseOut
+        
+        let boardRight = SKAction.moveToX(20, duration: 0.1)
+        boardRight.timingMode = SKActionTimingMode.EaseInEaseOut
+        
+        let boardSettle = SKAction.moveToX(0, duration: 0.1)
+        boardSettle.timingMode = SKActionTimingMode.EaseInEaseOut
+        
+        gameOverNode.runAction(SKAction.sequence([boardLeft, boardRight, boardSettle]))
+
+        
+    }
+    
+    // MARK: - Update
     
     override func update(currentTime: CFTimeInterval) {
         
-        if !gameOver {
+        if gameState == .Playing {
             
             platformsNode.enumerateChildNodesWithName("platform", usingBlock: {
                 node, stop in
@@ -435,13 +450,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     node.removeFromParent()
                 }
             })
+
+            platformsNode.enumerateChildNodesWithName("coin", usingBlock: {
+                node, stop in
+                let convertedPosition = self.convertPoint(node.position, fromNode: self.platformsNode)
+                if  convertedPosition.y > self.character.position.y {
+                    
+                    let duration: NSTimeInterval = 0.2
+                    let zoom = SKAction.scaleBy(3, duration: duration)
+                    let center = SKAction.moveTo(CGPointMake(self.size.width/2, self.size.height/2), duration: duration)
+                    let group = SKAction.group([zoom, center])
+                    node.runAction(group)
+                    
+                    self.runAction(SKAction.sequence([SKAction.waitForDuration(duration), SKAction.runBlock({
+                        self.switchToGameOver()
+                    })]))
+
+                }
+            })
             
             if platformsAdded <= 5 {
-                levelSpeed = 8
-            } else if platformsAdded <= 10 {
                 levelSpeed = 10
-            } else {
+            } else if platformsAdded <= 10 {
                 levelSpeed = 15
+            } else {
+                levelSpeed = 20
             }
             
             platformsNode.position.y += levelSpeed
@@ -451,7 +484,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             if (character.position.y) <= 0 || (character.position.y + character.size.height/3) >= self.size.height {
                 
-                endGame()
+                switchToGameOver()
                 
             }
             

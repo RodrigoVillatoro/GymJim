@@ -35,8 +35,9 @@ class GameViewController: UIViewController, MySceneDelegate {
         skView.presentScene(scene)
         
         // iAds
-        self.canDisplayBannerAds = true
-        
+        self.view.addSubview(bannerView)
+        bannerView.frame = CGRectOffset(bannerView.frame, 0, self.view.frame.height - bannerView.frame.height)
+        bannerView.hidden = false
 
     }
     
@@ -61,6 +62,7 @@ class GameViewController: UIViewController, MySceneDelegate {
         return true
     }
     
+
     // MARK: - ADS
     
 
