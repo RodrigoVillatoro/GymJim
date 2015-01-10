@@ -25,7 +25,7 @@ class AudioController: NSObject {
     }
     
     func configureAudioPlayer() {
-        let backgroundMusicPath = NSBundle.mainBundle().pathForResource("bgMusic1", ofType: "mp3")
+        let backgroundMusicPath = NSBundle.mainBundle().pathForResource("bgMusic1", ofType: "wav")
         let backgroundMusicURL = NSURL.fileURLWithPath(backgroundMusicPath!)
         backgroundMusicPlayer = AVAudioPlayer(contentsOfURL: backgroundMusicURL, error: nil)
         backgroundMusicPlayer.numberOfLoops = -1

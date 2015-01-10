@@ -20,15 +20,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // Score
     var score: Int = 0
     let scoreLabel = SKLabelNode(text: "x 0")
+    var coinScore = SKSpriteNode()
     
     // Platform
     var currentPlatform: SKSpriteNode?
     var platformsAdded: CGFloat = 0.0
     let gapHeight: CGFloat = 500
     var canBreakPlatform = false
+    var initialPlatformY = CGFloat()
+    var moveUp = SKAction.moveByX(0, y: 500, duration: 0.2)
+    
+    // Touches
+    var canTouch = true
     
     // Level difficulty
     var levelSpeed = CGFloat()
+    
+    // Background
+    var background = SKSpriteNode()
     
     // Character
     let character = SKSpriteNode(imageNamed: "character")
@@ -39,8 +48,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let pointRight = SKAction.animateWithTextures([SKTexture(imageNamed: "characterRight"), SKTexture(imageNamed: "character")], timePerFrame: 0.1)
     let breathe = SKAction.animateWithTextures([SKTexture(imageNamed: "characterLeftFoot"), SKTexture(imageNamed: "character"), SKTexture(imageNamed: "characterRightFoot"), SKTexture(imageNamed: "character")], timePerFrame: 0.1)
     
+    // Game Over Animations
+    let boardLeft = SKAction.moveToX(-50, duration: 0.4)
+    let boardRight = SKAction.moveToX(20, duration: 0.1)
+    let boardSettle = SKAction.moveToX(0, duration: 0.1)
+
     // Nodes
     let worldNode = SKNode()
+    let backgroundNode = SKNode()
     let characterNode = SKNode()
     let platformsNode = SKNode()
     let gameOverNode = SKNode()
@@ -75,6 +90,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Nodes
         self.addChild(worldNode)
+        worldNode.addChild(backgroundNode)
         worldNode.addChild(characterNode)
         worldNode.addChild(platformsNode)
         addChild(gameOverNode)
@@ -82,14 +98,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Physics
         physicsWorld.contactDelegate = self
         
-        // Spawn platform
-        spawnPlatforms()
-        spawnItems()
-        
+        // Add background
+        background = SKSpriteNode(imageNamed: "background")
+        background.setScale(3.0)
+        background.anchorPoint = CGPointMake(0.5, 1.0)
+        background.position = CGPointMake(self.size.width/2, self.size.height)
+        background.zPosition = Positions.Background.rawValue
+        backgroundNode.addChild(background)
+
         // Add character
         character.position = CGPointMake(characterPosition.getPositionX, startingY)
         character.zPosition = Positions.Character.rawValue
         character.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(150, 420))
+        character.physicsBody?.affectedByGravity = false
         character.physicsBody?.categoryBitMask = PhysicsCategory.Character
         character.physicsBody?.collisionBitMask = PhysicsCategory.Platform
         character.physicsBody?.contactTestBitMask = PhysicsCategory.Platform | PhysicsCategory.Treasure | PhysicsCategory.Axe
@@ -99,23 +120,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(character)
         character.runAction(SKAction.repeatActionForever(breathe))
         
+        // Initial platform Y
+        initialPlatformY = startingY - character.size.height * 0.40
+        
+        // Spawn platform
+        for var i = 0; i < 3; ++i {
+            spawnPlatforms()
+            spawnItems()
+        }
+        
         // Add HUD
-        let coin = SKSpriteNode(texture: gameAtlas.textureNamed("coin1"))
-        coin.setScale(0.90)
-        coin.position = CGPointMake(self.size.width * 0.40, self.size.height * 0.95)
-        coin.zPosition = Positions.Buttons.rawValue
-        worldNode.addChild(coin)
+        coinScore = SKSpriteNode(texture: gameAtlas.textureNamed("coin1"))
+        coinScore.setScale(0.90)
+        coinScore.position = CGPointMake(self.size.width * 0.40, self.size.height * 0.95)
+        coinScore.zPosition = Positions.Buttons.rawValue
+        worldNode.addChild(coinScore)
         
         scoreLabel.fontSize = 125
         scoreLabel.fontName = "Superclarendon-Black"
         scoreLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
         scoreLabel.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
-        scoreLabel.position = CGPointMake(coin.position.x + coin.size.width * 0.65, coin.position.y)
+        scoreLabel.position = CGPointMake(coinScore.position.x + coinScore.size.width * 0.65, coinScore.position.y)
         scoreLabel.zPosition = Positions.Buttons.rawValue
         worldNode.addChild(scoreLabel)
+
+        // Actions
+        boardLeft.timingMode = SKActionTimingMode.EaseInEaseOut
+        boardRight.timingMode = SKActionTimingMode.EaseInEaseOut
+        boardSettle.timingMode = SKActionTimingMode.EaseInEaseOut
         
         // Gesture Recognizers
-        addGestureRecognizers()
+//        addGestureRecognizers()
         
     }
     
@@ -123,15 +158,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         
-        if gameState == .Playing {
+        if gameState == .Playing && canTouch {
+            
+            canTouch = false
+            
             for touch in touches {
                 let touchLocation = touch.locationInNode(self)
                 if touchLocation.x <= self.size.width/2 {
+                    runAction(playCharacterMoveSound)
+                    character.runAction(pointLeft)
+                    updateCharacterPosition(tappedRight: false)
+                    
+                    backgroundNode.runAction(SKAction.moveByX(-25, y: 15, duration: 0.1))
                     
                 } else {
-                
+                    runAction(playCharacterMoveSound)
+                    character.runAction(pointRight)
+                    updateCharacterPosition(tappedRight: true)
+                    
+                    backgroundNode.runAction(SKAction.moveByX(25, y: 15, duration: 0.1))
                 }
             }
+            
+            platformsNode.runAction(moveUp)
+            spawnPlatforms()
+            spawnItems()
+            
+            
         } else if gameState == .GameOver {
             for touch in touches {
                 let touchLocation = touch.locationInNode(self)
@@ -140,6 +193,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
             }
         }
+    }
+    
+    func removeItemsNextToCharacter() {
+        platformsNode.enumerateChildNodesWithName("item", usingBlock: {
+            node, stop in
+            let convertedPosition = self.convertPoint(node.position, fromNode: self.platformsNode)
+            if  convertedPosition.y >= (self.character.position.y - self.gapHeight/2) {
+                node.physicsBody = nil
+                let fade = SKAction.fadeOutWithDuration(0.3)
+                node.runAction(SKAction.sequence([fade, SKAction.removeFromParent()]))
+            }
+        })
     }
     
     func addGestureRecognizers() {
@@ -238,9 +303,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if firstBody.categoryBitMask == PhysicsCategory.Treasure && secondBody.categoryBitMask == PhysicsCategory.Character {
                 runAction(playCoinSound)
                 let coin = firstBody.node as? SKSpriteNode
-                coin!.removeFromParent()
+                coin!.name = "collected-item"
+                coin?.physicsBody = nil
+                let coinScorePosition = self.convertPoint(coinScore.position, toNode: self.platformsNode)
+                let collect = SKAction.moveTo(CGPointMake(coinScorePosition.x, coinScorePosition.y - coinScore.size.height/2), duration: 0.3)
+                collect.timingMode = SKActionTimingMode.EaseOut
+                coin!.runAction(SKAction.sequence([collect, SKAction.removeFromParent()]))
+                removeItemsNextToCharacter()
                 ++score
                 scoreLabel.text = "x \(score)"
+                canTouch = true
             }
             
         }
@@ -273,51 +345,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     func spawnPlatforms() {
-        
-        let spawn = SKAction.runBlock({
-            
+
             // Add three platforms
-            self.addPlatform(positionOnSceen: CGPointMake(self.size.width * 0.50, self.platformsAdded * -self.gapHeight))
-            self.addPlatform(positionOnSceen: CGPointMake(self.size.width * 0.25, self.platformsAdded * -self.gapHeight))
-            self.addPlatform(positionOnSceen: CGPointMake(self.size.width * 0.75, self.platformsAdded * -self.gapHeight))
-            ++self.platformsAdded
-        })
-        
-        let wait = SKAction.waitForDuration(0.5)
-        self.runAction(SKAction.repeatActionForever(SKAction.sequence([spawn, wait])), withKey: "spawnPlatforms")
-        
+            self.addPlatform(positionOnSceen: CGPointMake(self.size.width * 0.50, initialPlatformY + self.platformsAdded * -self.gapHeight))
+            self.addPlatform(positionOnSceen: CGPointMake(self.size.width * 0.25, initialPlatformY + self.platformsAdded * -self.gapHeight))
+            self.addPlatform(positionOnSceen: CGPointMake(self.size.width * 0.75, initialPlatformY + self.platformsAdded * -self.gapHeight))
+            self.platformsAdded += 1
     }
     
     func spawnItems() {
-        
-        let spawn = SKAction.runBlock({
-            
+
             let random = arc4random()%3
             
             if random == 0 {
                 
-                self.addTreasure(positionOnSceen: CGPointMake(self.size.width * 0.50, self.platformsAdded * -self.gapHeight))
-                self.addTreasure(positionOnSceen: CGPointMake(self.size.width * 0.25, self.platformsAdded * -self.gapHeight))
-                self.addAxe(positionOnSceen: CGPointMake(self.size.width * 0.75, self.platformsAdded * -self.gapHeight))
+                self.addTreasure(positionOnSceen: CGPointMake(self.size.width * 0.50, initialPlatformY + self.platformsAdded * -self.gapHeight))
+                self.addTreasure(positionOnSceen: CGPointMake(self.size.width * 0.25, initialPlatformY + self.platformsAdded * -self.gapHeight))
+                self.addAxe(positionOnSceen: CGPointMake(self.size.width * 0.75, initialPlatformY + self.platformsAdded * -self.gapHeight))
                 
             } else if random == 1 {
                 
-                self.addTreasure(positionOnSceen: CGPointMake(self.size.width * 0.50, self.platformsAdded * -self.gapHeight))
-                self.addAxe(positionOnSceen: CGPointMake(self.size.width * 0.25, self.platformsAdded * -self.gapHeight))
-                self.addTreasure(positionOnSceen: CGPointMake(self.size.width * 0.75, self.platformsAdded * -self.gapHeight))
+                self.addTreasure(positionOnSceen: CGPointMake(self.size.width * 0.50, initialPlatformY + self.platformsAdded * -self.gapHeight))
+                self.addAxe(positionOnSceen: CGPointMake(self.size.width * 0.25, initialPlatformY + self.platformsAdded * -self.gapHeight))
+                self.addTreasure(positionOnSceen: CGPointMake(self.size.width * 0.75, initialPlatformY + self.platformsAdded * -self.gapHeight))
                 
             } else {
                 
-                self.addAxe(positionOnSceen: CGPointMake(self.size.width * 0.50, self.platformsAdded * -self.gapHeight))
-                self.addTreasure(positionOnSceen: CGPointMake(self.size.width * 0.25, self.platformsAdded * -self.gapHeight))
-                self.addTreasure(positionOnSceen: CGPointMake(self.size.width * 0.75, self.platformsAdded * -self.gapHeight))
+                self.addAxe(positionOnSceen: CGPointMake(self.size.width * 0.50, initialPlatformY + self.platformsAdded * -self.gapHeight))
+                self.addTreasure(positionOnSceen: CGPointMake(self.size.width * 0.25, initialPlatformY + self.platformsAdded * -self.gapHeight))
+                self.addTreasure(positionOnSceen: CGPointMake(self.size.width * 0.75, initialPlatformY + self.platformsAdded * -self.gapHeight))
                 
             }
 
-        })
-        
-        let wait = SKAction.waitForDuration(0.5)
-        self.runAction(SKAction.repeatActionForever(SKAction.sequence([spawn, wait])), withKey: "spawnItems")
         
     }
     
@@ -327,12 +386,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let platform = SKSpriteNode(texture: gameAtlas.textureNamed("platform"))
         platform.position = positionOnSceen
         platform.zPosition = Positions.Platform.rawValue
-        platform.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(200, 50))
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.dynamic = false
-        platform.physicsBody?.restitution = 0
-        platform.physicsBody?.friction = 1
-        platform.physicsBody?.categoryBitMask = PhysicsCategory.Platform
         platform.name = "platform"
         platformsNode.addChild(platform)
         
@@ -355,7 +408,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         item.physicsBody?.affectedByGravity = false
         item.physicsBody?.dynamic = false
         item.physicsBody?.categoryBitMask = PhysicsCategory.Treasure
-        item.name = "coin"
+        item.name = "item"
         platformsNode.addChild(item)
         
         item.runAction(SKAction.repeatActionForever(SKAction.animateWithTextures(textures, timePerFrame: 0.1)))
@@ -378,7 +431,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         item.physicsBody?.affectedByGravity = false
         item.physicsBody?.dynamic = false
         item.physicsBody?.categoryBitMask = PhysicsCategory.Axe
-        item.name = "platform"
+        item.name = "item"
         platformsNode.addChild(item)
         
         item.runAction(SKAction.repeatActionForever(SKAction.animateWithTextures(textures, timePerFrame: 0.2)))
@@ -421,17 +474,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         playButton.position = CGPointMake(self.size.width/2, self.size.height/2)
         playButton.zPosition = Positions.Buttons.rawValue
         gameOverNode.addChild(playButton)
-        
+
         // Run action
-        let boardLeft = SKAction.moveToX(-50, duration: 0.4)
-        boardLeft.timingMode = SKActionTimingMode.EaseInEaseOut
-        
-        let boardRight = SKAction.moveToX(20, duration: 0.1)
-        boardRight.timingMode = SKActionTimingMode.EaseInEaseOut
-        
-        let boardSettle = SKAction.moveToX(0, duration: 0.1)
-        boardSettle.timingMode = SKActionTimingMode.EaseInEaseOut
-        
         gameOverNode.runAction(SKAction.sequence([boardLeft, boardRight, boardSettle]))
 
         
@@ -451,33 +495,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
             })
 
-            platformsNode.enumerateChildNodesWithName("coin", usingBlock: {
-                node, stop in
-                let convertedPosition = self.convertPoint(node.position, fromNode: self.platformsNode)
-                if  convertedPosition.y > self.character.position.y {
-                    
-                    let duration: NSTimeInterval = 0.2
-                    let zoom = SKAction.scaleBy(3, duration: duration)
-                    let center = SKAction.moveTo(CGPointMake(self.size.width/2, self.size.height/2), duration: duration)
-                    let group = SKAction.group([zoom, center])
-                    node.runAction(group)
-                    
-                    self.runAction(SKAction.sequence([SKAction.waitForDuration(duration), SKAction.runBlock({
-                        self.switchToGameOver()
-                    })]))
-
-                }
-            })
+//            platformsNode.enumerateChildNodesWithName("coin", usingBlock: {
+//                node, stop in
+//                let convertedPosition = self.convertPoint(node.position, fromNode: self.platformsNode)
+//                if  convertedPosition.y > self.character.position.y {
+//                    
+//                    let duration: NSTimeInterval = 0.2
+//                    let zoom = SKAction.scaleBy(3, duration: duration)
+//                    let center = SKAction.moveTo(CGPointMake(self.size.width/2, self.size.height/2), duration: duration)
+//                    let group = SKAction.group([zoom, center])
+//                    node.runAction(group)
+//                    
+//                    self.runAction(SKAction.sequence([SKAction.waitForDuration(duration), SKAction.runBlock({
+//                        self.switchToGameOver()
+//                    })]))
+//
+//                }
+//            })
             
-            if platformsAdded <= 5 {
-                levelSpeed = 10
-            } else if platformsAdded <= 10 {
-                levelSpeed = 15
-            } else {
-                levelSpeed = 20
-            }
+//            if platformsAdded <= 5 {
+//                levelSpeed = 10
+//            } else if platformsAdded <= 10 {
+//                levelSpeed = 15
+//            } else {
+//                levelSpeed = 20
+//            }
             
-            platformsNode.position.y += levelSpeed
+//            platformsNode.position.y += levelSpeed
             
             
             // If character is out of bounds

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AF2800241A5BD94B00272A02 /* bgMusic1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AF2800231A5BD94B00272A02 /* bgMusic1.mp3 */; };
 		AF2800281A5BDBA300272A02 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF2800271A5BDBA300272A02 /* iAd.framework */; };
 		AF3A69741A598D11000703FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3A69731A598D11000703FA /* AppDelegate.swift */; };
 		AF3A69781A598D11000703FA /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3A69771A598D11000703FA /* GameScene.swift */; };
@@ -30,6 +29,8 @@
 		AF3A69B21A598DA9000703FA /* game.atlas in Resources */ = {isa = PBXBuildFile; fileRef = AF3A69A61A598DA9000703FA /* game.atlas */; };
 		AF4F1A471A5CE69A00AD0A0A /* mainMenu.png in Resources */ = {isa = PBXBuildFile; fileRef = AF4F1A451A5CE69A00AD0A0A /* mainMenu.png */; };
 		AF5292EC1A604D8C000EB28F /* ui.atlas in Resources */ = {isa = PBXBuildFile; fileRef = AF5292EB1A604D8C000EB28F /* ui.atlas */; };
+		AF5292EE1A608A52000EB28F /* bgMusic1.wav in Resources */ = {isa = PBXBuildFile; fileRef = AF5292ED1A608A52000EB28F /* bgMusic1.wav */; };
+		AF55262C1A61A2AC001D2920 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = AF55262B1A61A2AC001D2920 /* background.png */; };
 		AFBBB4541A5B395E0088E570 /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBB4531A5B395E0088E570 /* AudioController.swift */; };
 		AFBBB4561A5B39D70088E570 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFBBB4551A5B39D70088E570 /* AVFoundation.framework */; };
 		AFC582E91A5CE98500539E0E /* playButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AFC582E81A5CE98500539E0E /* playButton@2x.png */; };
@@ -47,7 +48,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		AF2800231A5BD94B00272A02 /* bgMusic1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgMusic1.mp3; sourceTree = "<group>"; };
 		AF2800271A5BDBA300272A02 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		AF3A696E1A598D11000703FA /* GymJim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GymJim.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF3A69721A598D11000703FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -74,6 +74,8 @@
 		AF3A69A61A598DA9000703FA /* game.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = game.atlas; sourceTree = "<group>"; };
 		AF4F1A451A5CE69A00AD0A0A /* mainMenu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainMenu.png; sourceTree = "<group>"; };
 		AF5292EB1A604D8C000EB28F /* ui.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = ui.atlas; sourceTree = "<group>"; };
+		AF5292ED1A608A52000EB28F /* bgMusic1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bgMusic1.wav; sourceTree = "<group>"; };
+		AF55262B1A61A2AC001D2920 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		AFBBB4531A5B395E0088E570 /* AudioController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioController.swift; sourceTree = "<group>"; };
 		AFBBB4551A5B39D70088E570 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AFC582E81A5CE98500539E0E /* playButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "playButton@2x.png"; sourceTree = "<group>"; };
@@ -166,7 +168,7 @@
 		AF3A69991A598DA8000703FA /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
-				AF2800231A5BD94B00272A02 /* bgMusic1.mp3 */,
+				AF5292ED1A608A52000EB28F /* bgMusic1.wav */,
 				AF3A699B1A598DA8000703FA /* button.wav */,
 				AF3A699C1A598DA8000703FA /* coin.wav */,
 				AF3A699D1A598DA8000703FA /* crawler_die.wav */,
@@ -194,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				AF4F1A441A5CE69A00AD0A0A /* images */,
+				AF55262B1A61A2AC001D2920 /* background.png */,
 				AF3A69991A598DA8000703FA /* Sounds */,
 				AF3A69A51A598DA9000703FA /* TextureAtlases */,
 			);
@@ -298,14 +301,15 @@
 				AF3A69A81A598DA9000703FA /* button.wav in Resources */,
 				AF3A697F1A598D11000703FA /* Images.xcassets in Resources */,
 				AF3A69AE1A598DA9000703FA /* splash.wav in Resources */,
-				AF2800241A5BD94B00272A02 /* bgMusic1.mp3 in Resources */,
 				AF3A69B11A598DA9000703FA /* window out.wav in Resources */,
 				AF4F1A471A5CE69A00AD0A0A /* mainMenu.png in Resources */,
+				AF55262C1A61A2AC001D2920 /* background.png in Resources */,
 				AF3A69A91A598DA9000703FA /* coin.wav in Resources */,
 				AF3A69B01A598DA9000703FA /* window in.wav in Resources */,
 				AF3A69AD1A598DA9000703FA /* lose.wav in Resources */,
 				AF3A697D1A598D11000703FA /* Main.storyboard in Resources */,
 				AF3A69AA1A598DA9000703FA /* crawler_die.wav in Resources */,
+				AF5292EE1A608A52000EB28F /* bgMusic1.wav in Resources */,
 				AF3A69AB1A598DA9000703FA /* Game Over.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -47,7 +47,8 @@ enum PhysicsCategory {
 }
 
 enum Positions: CGFloat {
-    case Platform = 1
+    case Background = 1
+    case Platform
     case Item
     case Character
     case WaterBack
@@ -58,7 +59,10 @@ enum Positions: CGFloat {
     case Labels
 }
 
-
+func degreesToRadians(degrees: CGFloat) -> CGFloat {
+    var result = CGFloat(M_PI / 180) * degrees
+    return result
+}
 
 
 
